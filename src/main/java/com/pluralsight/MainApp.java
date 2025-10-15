@@ -14,48 +14,6 @@ public class MainApp {
         while (!isRunning) {
             isRunning = homeScreen();
         }
-            //homeScreen();// keeps running as long as set to true
-
-       /*switch (choice) {
-            //one for deposit, ledger, make payment, invalid choice, exit
-            case 1:
-                System.out.println("add deposit");
-                break;
-            case 2:
-                System.out.println("make a payment");
-                break;
-            case 3:
-                System.out.println("go to ledger");
-                break;
-            case 4:
-                System.out.println("Exit the program");
-                isRunning = false;
-                break;
-            default:
-                System.out.println("Invalid choice! Try again");
-                break;
-        }
-        }
-        isRunning =false;
-*/
-        // homeScreen();
-/*
-        try{
-            FileReader fReader = new FileReader("transactions.csv");
-            BufferedReader bReader = new BufferedReader(fReader);
-            bReader.readLine();
-            String lineOfText;
-            while((lineOfText = bReader.readLine() )!= null){
-                System.out.println(lineOfText);
-
-            }
-            bReader.close();
-        }catch(IOException e){
-            System.out.println(e.getMessage());
-
-        }
-
-*/
 
     }
 
@@ -76,13 +34,13 @@ public class MainApp {
         switch (choice) {
             //one for deposit, ledger, make payment, invalid choice, exit
             case 1:
-                System.out.println("add deposit");
+                addDeposit();
                 break;
             case 2:
-                System.out.println("make a payment");
+                makePayment();
                 break;
             case 3:
-                System.out.println("go to ledger");
+                ledgerScreen();
                 break;
             case 4:
                 System.out.println("Exit the program");
@@ -93,7 +51,42 @@ public class MainApp {
         }
         return false;
     }
+    //method to deposit
+    public static void addDeposit(){
+        //get the amount
+        //get the vendor
+        //get description
+    }
+    public static void makePayment(){
 
+    }
+    public static void ledgerScreen(){
+        String options = """
+                =========================
+                    Ledger Screen
+                =========================
+                1) Show all transactions
+                2) Show Deposits
+                3) Show Payments
+                4) Show Reports
+                5)Go to Homepage
+                """;
+        System.out.println(options);
+        System.out.println("Enter a number to choose an option:");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
 
+        switch(choice){
+            case 1://show all transactions
+            case 2://show all deposits
+            case 3://show all payments(negative)
+            case 4://Show reports
+            case 5://Got to homepage
+                homeScreen();
+            default://Handle any outside inputs
+                System.out.println("Invalid choice! Try again");
+            break;
+        }
+    }
 }
 
