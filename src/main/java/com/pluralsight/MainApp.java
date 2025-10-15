@@ -8,10 +8,12 @@ import java.util.Scanner;
 public class MainApp {
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-        homeScreen();
+
         boolean isRunning = false; //keep the program running if set to true
 
-        while (!isRunning) {}
+        while (!isRunning) {
+            isRunning = homeScreen();
+        }
             //homeScreen();// keeps running as long as set to true
 
        /*switch (choice) {
@@ -57,7 +59,7 @@ public class MainApp {
 
     }
 
-    public static void homeScreen() {
+    public static boolean homeScreen() {
         String options = """
                 =========================
                     Home Menu
@@ -84,14 +86,14 @@ public class MainApp {
                 break;
             case 4:
                 System.out.println("Exit the program");
-
-                break;
+                return true;
             default:
                 System.out.println("Invalid choice! Try again");
                 break;
         }
-
+        return false;
     }
+
 
 }
 
