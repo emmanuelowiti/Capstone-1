@@ -3,7 +3,10 @@ package com.pluralsight;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
+import java.time.LocalDateTime;
 
 public class MainApp {
     static Scanner scanner = new Scanner(System.in);
@@ -18,6 +21,7 @@ public class MainApp {
     }
 
     public static boolean homeScreen() {
+        TransactionManager.transactions("transactions.csv");
         String options = """
                 =========================
                     Home Menu
@@ -37,7 +41,7 @@ public class MainApp {
                 addDeposit();
                 break;
             case 2:
-                makePayment();
+                addPayment();
                 break;
             case 3:
                 ledgerScreen();
@@ -46,7 +50,7 @@ public class MainApp {
                 System.out.println("Exit the program");
                 return true;
             default:
-                System.out.println("Invalid choice! Try again");
+                System.out.println("Invalid choice! Try again\n");
                 break;
         }
         return false;
@@ -54,11 +58,35 @@ public class MainApp {
     //method to deposit
     public static void addDeposit(){
         //get the amount
+        System.out.println("💰Enter amount to deposit:");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
         //get the vendor
+        System.out.println("Enter the vendor information:");
+        String vendor = scanner.nextLine();
         //get description
-    }
-    public static void makePayment(){
+        System.out.println("Add description to the deposit:");
+        String description = scanner.nextLine();
 
+        // create Transaction Object
+        Ledger.makeDeposit(amount,vendor,description);
+
+
+
+    }
+    public static void addPayment(){
+        //get the amount
+        System.out.println("💰Enter amount to make payment:");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+        //get the vendor
+        System.out.println("Enter the vendor information:");
+        String vendor = scanner.nextLine();
+        //get description
+        System.out.println("Add description to the payment:");
+        String description = scanner.nextLine();
+
+        Ledger.addPayment(amount,vendor,description);
     }
     public static void ledgerScreen(){
         String options = """
@@ -77,14 +105,22 @@ public class MainApp {
         scanner.nextLine();
 
         switch(choice){
-            case 1://show all transactions
-            case 2://show all deposits
-            case 3://show all payments(negative)
-            case 4://Show reports
+            case 1:
+                Ledger.showAllTransactions();
+                break;//show all transactions
+            case 2:
+                Ledger.showAllDeposits();
+                break;//show all deposits
+            case 3:
+                Ledger.showAllPayments();
+                break;//show all payments(negative)
+            case 4:
+                break;//Show reports
             case 5://Got to homepage
                 homeScreen();
+            break;
             default://Handle any outside inputs
-                System.out.println("Invalid choice! Try again");
+                System.out.println("⚠️Invalid choice! Try again\n");
             break;
         }
     }

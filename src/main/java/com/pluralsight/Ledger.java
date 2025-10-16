@@ -1,15 +1,42 @@
 package com.pluralsight;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+
+;
 
 public class Ledger {
-    private final ArrayList<Transaction> transactions;
+    public static ArrayList<Transaction> ledger = new ArrayList<>();
 
-    public Ledger(ArrayList<Transaction> transactions) {
-        this.transactions = transactions;
+    public static void makeDeposit(double amount,String vendor, String description){
+        ledger.add(0,new Transaction(LocalDate.now(),LocalTime.now(),description,vendor, amount));
+    }
+    public static void addPayment(double amount, String vendor, String description){
+        ledger.add(0,new Transaction(LocalDate.now(),LocalTime.now(),description,vendor, amount));
+
+    }
+    public static void showAllTransactions(){
+        for(Transaction t : ledger){
+            System.out.println(t);
+        }
+    }
+    public static void showAllDeposits(){
+        for(Transaction t : ledger){
+            if(t.getAmount()> 0){
+                System.out.println(t);
+            }
+        }
+    }
+    public static void showAllPayments(){
+        for(Transaction t : ledger){
+            if(t.getAmount()< 0){
+                System.out.println(t);
+            }
+        }
     }
 }
-
