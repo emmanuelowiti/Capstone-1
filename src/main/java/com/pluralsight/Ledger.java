@@ -17,7 +17,7 @@ public class Ledger {
         ledger.add(0,new Transaction(LocalDate.now(),LocalTime.now(),description,vendor, amount));
     }
     public static void addPayment(double amount, String vendor, String description){
-        ledger.add(0,new Transaction(LocalDate.now(),LocalTime.now(),description,vendor, amount));
+        ledger.add(0,new Transaction(LocalDate.now(),LocalTime.now(),description,vendor, (-1* amount)));
 
     }
     public static void showAllTransactions(){
@@ -27,7 +27,7 @@ public class Ledger {
     }
     public static void showAllDeposits(){
         for(Transaction t : ledger){
-            if(t.getAmount()> 0){
+            if(t.getAmount()>0){
                 System.out.println(t);
             }
         }

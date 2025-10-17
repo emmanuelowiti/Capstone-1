@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class MainApp {
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
+        TransactionManager.transactions("transactions.csv");
 
         boolean isRunning = false; //keep the program running if set to true
 
@@ -21,7 +22,7 @@ public class MainApp {
     }
 
     public static boolean homeScreen() {
-        TransactionManager.transactions("transactions.csv");
+       // TransactionManager.transactions("transactions.csv");
         String options = """
                 =========================
                     Home Menu
@@ -149,6 +150,7 @@ public class MainApp {
             case 3:
                 break;
             case 4:
+                previousYear();
                 break;
             case 5:
                 break;
@@ -157,5 +159,17 @@ public class MainApp {
         }
     }
 
-}
+    public static void previousYear(){
+    var transactions = TransactionManager.transactions("transactions.csv");
+    LocalDate now = LocalDate.now();
+    int lastYear = now.getYear() - 1;
+    System.out.println("\nTransactions for last year:");
+    for (Transaction transaction : transactions) {
+        if (transaction.getDate().getYear() == lastYear) {
+            System.out.println(transaction);
+
+        }
+
+}}}
+
 
