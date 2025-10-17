@@ -115,6 +115,7 @@ public class MainApp {
                 Ledger.showAllPayments();
                 break;//show all payments(negative)
             case 4:
+                showReports();
                 break;//Show reports
             case 5://Got to homepage
                 homeScreen();
@@ -123,6 +124,38 @@ public class MainApp {
                 System.out.println("⚠️Invalid choice! Try again\n");
             break;
         }
+
     }
+    public static void showReports(){
+        String options = """
+                =========================
+                    Reports Screen
+                =========================
+                1) Month To Date
+                2) Previous Month
+                3) Year To Date
+                4) Previous Year
+                5) Search by Vendor
+                """;
+        System.out.println(options);
+        System.out.println("Enter a number to choose an option:");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        switch(choice){
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            default:
+                System.out.println("⚠️Invalid choice! Try again\n");
+        }
+    }
+
 }
 
