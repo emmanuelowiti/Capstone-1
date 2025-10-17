@@ -5,11 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Scanner;
 import java.time.LocalDateTime;
 
 public class MainApp {
     static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         TransactionManager.transactions("transactions.csv");
 
@@ -22,7 +24,7 @@ public class MainApp {
     }
 
     public static boolean homeScreen() {
-       // TransactionManager.transactions("transactions.csv");
+        // TransactionManager.transactions("transactions.csv");
         String options = """
                 =========================
                     Home Menu
@@ -56,8 +58,9 @@ public class MainApp {
         }
         return false;
     }
+
     //method to deposit
-    public static void addDeposit(){
+    public static void addDeposit() {
         //get the amount
         System.out.println("💰Enter amount to deposit:");
         double amount = scanner.nextDouble();
@@ -70,12 +73,12 @@ public class MainApp {
         String description = scanner.nextLine();
 
         // create Transaction Object
-        Ledger.makeDeposit(amount,vendor,description);
-
+        Ledger.makeDeposit(amount, vendor, description);
 
 
     }
-    public static void addPayment(){
+
+    public static void addPayment() {
         //get the amount
         System.out.println("💰Enter amount to make payment:");
         double amount = scanner.nextDouble();
@@ -87,9 +90,10 @@ public class MainApp {
         System.out.println("Add description to the payment:");
         String description = scanner.nextLine();
 
-        Ledger.addPayment(amount,vendor,description);
+        Ledger.addPayment(amount, vendor, description);
     }
-    public static void ledgerScreen(){
+
+    public static void ledgerScreen() {
         String options = """
                 =========================
                     Ledger Screen
@@ -105,7 +109,7 @@ public class MainApp {
         int choice = scanner.nextInt();
         scanner.nextLine();
 
-        switch(choice){
+        switch (choice) {
             case 1:
                 Ledger.showAllTransactions();
                 break;//show all transactions
@@ -120,14 +124,15 @@ public class MainApp {
                 break;//Show reports
             case 5://Got to homepage
                 homeScreen();
-            break;
+                break;
             default://Handle any outside inputs
                 System.out.println("⚠️Invalid choice! Try again\n");
-            break;
+                break;
         }
 
     }
-    public static void showReports(){
+
+    public static void showReports() {
         String options = """
                 =========================
                     Reports Screen
@@ -142,7 +147,7 @@ public class MainApp {
         System.out.println("Enter a number to choose an option:");
         int choice = scanner.nextInt();
         scanner.nextLine();
-        switch(choice){
+        switch (choice) {
             case 1:
                 break;
             case 2:
@@ -153,23 +158,33 @@ public class MainApp {
                 previousYear();
                 break;
             case 5:
+               /* System.out.println("What name do you want to search for?");
+                String nameToSearchFor = scanner.nextLine();
+                List<Transaction> matchesByName = Transaction.getVendor(TransactionManager, nameToSearchFor);
+                Ledger.ledger.getVendor(matchesByName);*/
                 break;
+               // findVendor();
+
             default:
                 System.out.println("⚠️Invalid choice! Try again\n");
+                break;
         }
     }
 
-    public static void previousYear(){
-    var transactions = TransactionManager.transactions("transactions.csv");
-    LocalDate now = LocalDate.now();
-    int lastYear = now.getYear() - 1;
-    System.out.println("\nTransactions for last year:");
-    for (Transaction transaction : transactions) {
-        if (transaction.getDate().getYear() == lastYear) {
-            System.out.println(transaction);
 
+    public static void previousYear() {
+        var transactions = TransactionManager.transactions("transactions.csv");
+        LocalDate now = LocalDate.now();
+        int lastYear = now.getYear() - 1;
+        System.out.println("\nTransactions for last year:");
+        for (Transaction transaction : transactions) {
+            if (transaction.getDate().getYear() == lastYear) {
+                System.out.println(transaction);
+
+            }
         }
 
-}}}
+    }
+}
 
 
