@@ -15,16 +15,14 @@ public class MainApp {
     public static void main(String[] args) {
         TransactionManager.transactions("transactions.csv");
 
-        boolean isRunning = false; //keep the program running if set to true
+        boolean isRunning = false;
 
         while (!isRunning) {
             isRunning = homeScreen();
         }
-
     }
 
     public static boolean homeScreen() {
-        // TransactionManager.transactions("transactions.csv");
         String options = """
                 =========================
                     Home Menu
@@ -38,8 +36,8 @@ public class MainApp {
         System.out.print("Enter a number to choose an option: \n");
         int choice = scanner.nextInt();
         scanner.nextLine();
+
         switch (choice) {
-            //one for deposit, ledger, make payment, invalid choice, exit
             case 1:
                 addDeposit();
                 break;
@@ -59,34 +57,28 @@ public class MainApp {
         return false;
     }
 
-    //method to deposit
     public static void addDeposit() {
-        //get the amount
         System.out.println("💰Enter amount to deposit:");
         double amount = scanner.nextDouble();
         scanner.nextLine();
-        //get the vendor
+
         System.out.println("Enter the vendor information:");
         String vendor = scanner.nextLine();
-        //get description
+
         System.out.println("Add description to the deposit:");
         String description = scanner.nextLine();
 
-        // create Transaction Object
         Ledger.makeDeposit(amount, vendor, description);
-
-
     }
 
     public static void addPayment() {
-        //get the amount
         System.out.println("💰Enter amount to make payment:");
         double amount = scanner.nextDouble();
         scanner.nextLine();
-        //get the vendor
+
         System.out.println("Enter the vendor information:");
         String vendor = scanner.nextLine();
-        //get description
+
         System.out.println("Add description to the payment:");
         String description = scanner.nextLine();
 
@@ -94,42 +86,45 @@ public class MainApp {
     }
 
     public static void ledgerScreen() {
-        String options = """
-                =========================
-                    Ledger Screen
-                =========================
-                1) Show all transactions
-                2) Show Deposits
-                3) Show Payments
-                4) Show Reports
-                5)Go to Homepage
-                """;
-        System.out.println(options);
-        System.out.println("Enter a number to choose an option:");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        boolean stayInLedger = true;
 
-        switch (choice) {
-            case 1:
-                Ledger.showAllTransactions();
-                break;//show all transactions
-            case 2:
-                Ledger.showAllDeposits();
-                break;//show all deposits
-            case 3:
-                Ledger.showAllPayments();
-                break;//show all payments(negative)
-            case 4:
-                showReports();
-                break;//Show reports
-            case 5://Got to homepage
-                homeScreen();
-                break;
-            default://Handle any outside inputs
-                System.out.println("⚠️Invalid choice! Try again\n");
-                break;
+        while (stayInLedger) {
+            String options = """
+                    =========================
+                        Ledger Screen
+                    =========================
+                    1) Show all transactions
+                    2) Show Deposits
+                    3) Show Payments
+                    4) Show Reports
+                    5) Go to Homepage
+                    """;
+            System.out.println(options);
+            System.out.println("Enter a number to choose an option:");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    Ledger.showAllTransactions();
+                    break;
+                case 2:
+                    Ledger.showAllDeposits();
+                    break;
+                case 3:
+                    Ledger.showAllPayments();
+                    break;
+                case 4:
+                    showReports();
+                    break;
+                case 5:
+                    stayInLedger = false;
+                    break;
+                default:
+                    System.out.println("⚠️Invalid choice! Try again\n");
+                    break;
+            }
         }
-
     }
 
     public static void showReports() {
@@ -142,49 +137,104 @@ public class MainApp {
                 3) Year To Date
                 4) Previous Year
                 5) Search by Vendor
+                0) Back
                 """;
         System.out.println(options);
         System.out.println("Enter a number to choose an option:");
         int choice = scanner.nextInt();
         scanner.nextLine();
+
         switch (choice) {
             case 1:
+                monthToDate();
                 break;
             case 2:
+                previousMonth();
                 break;
             case 3:
+                yearToDate();
                 break;
             case 4:
                 previousYear();
                 break;
             case 5:
-               /* System.out.println("What name do you want to search for?");
-                String nameToSearchFor = scanner.nextLine();
-                List<Transaction> matchesByName = Transaction.getVendor(TransactionManager, nameToSearchFor);
-                Ledger.ledger.getVendor(matchesByName);*/
+                searchByVendor();
                 break;
-               // findVendor();
-
+            case 0:
+                ledgerScreen();
+                break;
             default:
                 System.out.println("⚠️Invalid choice! Try again\n");
                 break;
         }
     }
 
+    public static void monthToDate() {
+        LocalDate now = LocalDate.now();
+        LocalDate startOfMonth = now.withDayOfMonth(1);
+
+        System.out.println("\nTransactions for this month:");
+        for (Transaction transaction : Ledger.ledger) {
+            if (!transaction.getDate().isBefore(startOfMonth)) {
+                System.out.println(transaction);
+            }
+        }
+    }
+
+    public static void previousMonth() {
+        LocalDate now = LocalDate.now();
+        LocalDate startOfPreviousMonth = now.minusMonths(1).withDayOfMonth(1);
+        LocalDate endOfPreviousMonth = now.withDayOfMonth(1).minusDays(1);
+
+        System.out.println("\nTransactions for previous month:");
+        for (Transaction transaction : Ledger.ledger) {
+            LocalDate transDate = transaction.getDate();
+            if (!transDate.isBefore(startOfPreviousMonth) && !transDate.isAfter(endOfPreviousMonth)) {
+                System.out.println(transaction);
+            }
+        }
+    }
+
+    public static void yearToDate() {
+        LocalDate now = LocalDate.now();
+        int currentYear = now.getYear();
+
+        System.out.println("\nTransactions for this year:");
+        for (Transaction transaction : Ledger.ledger) {
+            if (transaction.getDate().getYear() == currentYear) {
+                System.out.println(transaction);
+            }
+        }
+    }
 
     public static void previousYear() {
         var transactions = TransactionManager.transactions("transactions.csv");
         LocalDate now = LocalDate.now();
         int lastYear = now.getYear() - 1;
+
         System.out.println("\nTransactions for last year:");
         for (Transaction transaction : transactions) {
             if (transaction.getDate().getYear() == lastYear) {
                 System.out.println(transaction);
+            }
+        }
+    }
 
+    public static void searchByVendor() {
+        System.out.println("Enter vendor name to search:");
+        String vendorName = scanner.nextLine();
+
+        System.out.println("\nTransactions for vendor: " + vendorName);
+        boolean found = false;
+        for (Transaction transaction : Ledger.ledger) {
+            if (transaction.getVendor().equalsIgnoreCase(vendorName)) {
+                System.out.println(transaction);
+                found = true;
             }
         }
 
+        if (!found) {
+            System.out.println("No transactions found for vendor: " + vendorName);
+        }
     }
 }
-
-
