@@ -10,13 +10,13 @@ public class Ledger {
     public static ArrayList<Transaction> ledger = new ArrayList<>();
 
     public static void makeDeposit(double amount, String vendor, String description) {
-        Transaction t = new Transaction(LocalDate.now(), LocalTime.now().withNano(0), description, vendor, amount);
+        Transaction t = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
         ledger.add(0, t);
         TransactionManager.saveInfoTransaction(t);
     }
 
     public static void addPayment(double amount, String vendor, String description) {
-        Transaction t = new Transaction(LocalDate.now(), LocalTime.now().withNano(0), description, vendor, (-1 * amount));
+        Transaction t = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, (-1 * amount));
         ledger.add(0, t);
         TransactionManager.saveInfoTransaction(t);
     }
