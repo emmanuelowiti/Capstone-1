@@ -59,8 +59,9 @@ public class TransactionManager {
                     t.getAmount();
 
             // write the transaction to the file
+            bufWriter.newLine();
             bufWriter.write(text);
-            bufWriter.newLine(); //
+             //
 
             // close the writer
             bufWriter.close();
